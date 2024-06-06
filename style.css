@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: hsla(215, 100%, 90%, 0.709);
+}
+
+form {
+    border: 3px solid rgba(245, 245, 245, 0.861);
+    padding-bottom: 10px;
+}
+
+div {
+    margin: 25px 
+}
+
+input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+#married {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+button {
+    margin: 10px 0px;
+    width: 100%;
+    background-color: rgba(40, 195, 40, 0.835);
+    padding: 10px;
+    color: white;
+    font-size: medium;
+}
+
+.cancel{
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 255, 0.851);
+    padding: 10px;
+    color: white;
+    font-size: medium;
+}
