@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import http from 'http'
-import { showAdd } from './views/view.js'
+import { showAdd } from './create/view.js'
+import { showRead } from './read/layout.js'
 
 
 http.createServer(function(req, res) {
@@ -17,7 +18,7 @@ http.createServer(function(req, res) {
         res.write(css);
         res.end();
      }else{
-        res.write('<h1>Hello World!<h1>');
+        res.write(showRead());
         res.end();
      }
 }).listen(3000)

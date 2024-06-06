@@ -1,4 +1,4 @@
-import { layout } from './layout.js'
+import { layoutAdd } from './layout.js'
 
 
 export function showAdd() {
@@ -24,7 +24,7 @@ export function showAdd() {
     </div>
     `
 
-    return layout('Adding Data', html)
+    return layoutAdd('Adding Data', html)
 }
 
 
