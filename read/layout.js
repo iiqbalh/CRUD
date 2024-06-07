@@ -1,15 +1,33 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { layoutAdd } from '../create/layout.js';
-const htmlPath = path.join(path.resolve(), 'read', 'index.html')
-const jsonPath = path.join(path.resolve(), 'data', 'data.json')
-let html = readFileSync(htmlPath, 'utf-8');
-let json = readFileSync(jsonPath, 'utf-8')
-let data = JSON.parse(json)
+
+export function reading() {
+let jsonPath = path.join(path.resolve(), 'data', 'data.json')
+const json = readFileSync(jsonPath, 'utf-8')
+return JSON.parse(json)
+}
+
+export function writing(value) {
+  writeFileSync(path.join(path.resolve(), 'data', 'data.json'), JSON.stringify(value), 'utf-8')
+}
+
+let data = reading()
+
+export function adding(name, height, weight, birthdate, married, cb) {
+  data.push({name: name, height: height, weight: weight, birthdate: birthdate, married: married === "true" ? "Yes" : "Not yet", function () {
+    cb()
+  }})
+  writing(data)
+}
+
+
 
 export function showRead() {
+  const htmlPath = path.join(path.resolve(), 'read', 'index.html')
+  let html = readFileSync(htmlPath, 'utf-8');
 
-    html += `
+  html += `
     <table id="people">
     <thead>
     <tr>
@@ -18,15 +36,16 @@ export function showRead() {
       <th>Height</th>
       <th>Weight</th>
       <th>Birth Date</th>
-      <th>Is married</th>
+      <th>Is Married</th>
+      <th>Action</th>
     </tr>
     </thead>
     <tbody>
     `
 
 
-    data.forEach((item, index) => {
-        html += `    
+  data.forEach((item, index) => {
+    html += `    
     <tr>
       <td>${index + 1}</td>
       <td>${item.name}</td>
@@ -34,14 +53,18 @@ export function showRead() {
       <td>${item.weight}</td>
       <td>${item.birthdate}</td>
       <td>${item.married}</td>
+      <td>
+      <a href='/edit'>Update</a>
+      <a href='/'>Delete</a>
+      </td>
     </tr>
     `
-    })
+  })
 
-    html += `
+  html += `
     </tbody>
     </table>
     `
 
-    return layoutAdd('CRUD (Create, Read, Update, Delete)', html)
+  return layoutAdd('CRUD (Create, Read, Update, Delete)', html)
 }
