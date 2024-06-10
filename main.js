@@ -1,88 +1,71 @@
-import { readFileSync } from 'fs';
-import http from 'http'
-import { showAdd } from './create/view.js'
-import { showRead } from './read/layout.js'
-import { showUpdate } from './update/layout.js'
-import { adding } from './read/layout.js';
+import express from 'express'
+import path from "path"
+import bodyParser from "body-parser"
+import { readFileSync, writeFileSync } from 'fs';
 
+const app = express();
+const datapath = path.join(path.resolve(), 'data', 'data.json')
+const data = readFileSync(datapath, "utf-8")
+const obj = JSON.parse(data)
 
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    if (req.url === '/add') {
-        if (req.method === "POST") {
-            let body = "";
-            req.on('data', (chunk) => {
-                body += chunk;
-            });
-            req.on('end', function () {
-                let params = new URLSearchParams(body);
+app.get('/', function(req, res) {
+    res.render('read', { data: obj })
+})
 
-                adding(params.get("name"), Number(params.get("height")), Number(params.get("weight")), params.get("birthdate"), params.get("married"), function () {
-                    res.writeHead(301, {
-                        location: 'http://127.0.0.1:3000'
-                    }).end();
-                })
-            })
-        } else {
-            res.write(showAdd());
-            res.end();
-        }
-    } else if (req.url === '/edit') {
-        res.write(showUpdate());
-        res.end();
-    }else if (req.url === '/delete') {
-        res.end(confirm(`apakah kamu yakin akan menghapus data${params.get("name")}`));
-    } else if (req.url === '/style.css') {
-        res.writeHead(200, { 'Content-Type': 'text/css' });
-        let css = readFileSync('./style.css')
-        res.write(css);
-        res.end();
+app.get('/add', function(req, res) {
+    res.render('create')
+})
+
+app.post('/add', function(req, res) {
+    let data = {
+        name: req.body.name, height: req.body.height, weight: req.body.weight, birthdate: req.body.birthdate, married: req.body.married
+    };
+    if (data.married == 'true') {
+        data.married = true;
+        obj.push(data);
     } else {
-        res.write(showRead());
-        res.end();
+        data.married = false;
+        obj.push(data);
     }
-}).listen(3000)
 
+    writeFileSync(datapath, JSON.stringify(obj), "utf-8");
+    res.redirect('/')
+})
 
+app.get('/edit/:id', function(req, res) {
+    const id = req.params.id
+    const item = obj[id]
+    res.render('update', { item })
+})
 
+app.post('/edit/:id', function(req, res) {
+    const id = req.params.id;
+    obj[id] = {
+        name: req.body.name, height: req.body.height, weight: req.body.weight, birthdate: req.body.birthdate, married: req.body.married
+    };
 
+    if (obj[id].married == 'true') {
+        obj[id].married = true;
+    } else {
+        obj[id].married = false
+    }
 
+    writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
+    res.redirect('/')
+})
 
+app.get('/delete/:id', function(req, res) {
+    const id = req.params.id;
+    obj.splice(id, 1);
+    writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
+    res.redirect('/')
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// [
-//     {
-//       "name": "himawan",
-//       "height": 168,
-//       "weight": 80.52,
-//       "birthdate": "1991-03-12",
-//       "married": false
-//     },
-//     {
-//       "name": "rahmat",
-//       "height": 171,
-//       "weight": 52.69,
-//       "birthdate": "1996-11-03",
-//       "married": true
-//     },
-//     {
-//       "name": "aziz",
-//       "height": 167,
-//       "weight": 57.5,
-//       "birthdate": "1996-05-13",
-//       "married": false
-//     }
-// ]    
+app.listen(3000, function() {
+    console.log(`Server berjalan di port 3000`)
+})

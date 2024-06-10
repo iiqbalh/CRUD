@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD (Create, Read, Update, Delete)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        function notif(name) {
+            const answer = confirm(`Apakah kamu yakin akan menghapus data '${name}' ?`);
+            if (answer) return true
+            else return false
+        }
+    </script>
+</head>
+
+<body>
+    <h1>JSON CRUD (Create, Read, Update, Delete)</h1>
+    <a class="create" href="/add">Create</a>
+        <table id="people">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Birth Date</th>
+                    <th>Is Married</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.forEach((value, index)=> { %>
+                    <tr>
+                        <td>
+                            <%= index + 1 %>
+                        </td>
+                        <td>
+                            <%= value.name %>
+                        </td>
+                        <td>
+                            <%= value.height %>
+                        </td>
+                        <td>
+                            <%= value.weight %>
+                        </td>
+                        <td>
+                            <%= value.birthdate %>
+                        </td>
+                        <td>
+                            <%= value.married === true ? 'Yes' : 'Not Yet'%>
+                        </td>
+                        <td><a href="/edit/<%= index %>">Update</a>
+                            <a href="/delete/<%= index %>" onclick="return notif('<%= value.name %>')">Delete</a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                        
+            </tbody>
+        </table>
+</body>
+
+</html>
