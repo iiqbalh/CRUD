@@ -23,15 +23,10 @@ app.get('/add', function(req, res) {
 
 app.post('/add', function(req, res) {
     let data = {
-        name: req.body.name, height: req.body.height, weight: req.body.weight, birthdate: req.body.birthdate, married: req.body.married
+        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: JSON.parse(req.body.married)
     };
-    if (data.married == 'true') {
-        data.married = true;
-        obj.push(data);
-    } else {
-        data.married = false;
-        obj.push(data);
-    }
+
+    obj.push(data)
 
     writeFileSync(datapath, JSON.stringify(obj), "utf-8");
     res.redirect('/')
@@ -46,14 +41,8 @@ app.get('/edit/:id', function(req, res) {
 app.post('/edit/:id', function(req, res) {
     const id = req.params.id;
     obj[id] = {
-        name: req.body.name, height: req.body.height, weight: req.body.weight, birthdate: req.body.birthdate, married: req.body.married
+        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: JSON.parse(req.body.married)
     };
-
-    if (obj[id].married == 'true') {
-        obj[id].married = true;
-    } else {
-        obj[id].married = false
-    }
 
     writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
     res.redirect('/')
