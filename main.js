@@ -23,7 +23,7 @@ app.get('/add', function(req, res) {
 
 app.post('/add', function(req, res) {
     let data = {
-        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: JSON.parse(req.body.married)
+        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: req.body.married === 'true' ? req.body.married = true : req.body.married = false 
     };
 
     obj.push(data)
@@ -41,9 +41,10 @@ app.get('/edit/:id', function(req, res) {
 app.post('/edit/:id', function(req, res) {
     const id = req.params.id;
     obj[id] = {
-        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: JSON.parse(req.body.married)
+        name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: req.body.married === 'true' ? req.body.married = true : req.body.married = false 
     };
 
+    console.log(obj[id])
     writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
     res.redirect('/')
 })

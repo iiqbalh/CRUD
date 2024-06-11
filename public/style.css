@@ -32,6 +32,7 @@ input {
 button {
     margin: 10px 0px;
     width: 100%;
+    border: none;
     background-color: rgba(40, 195, 40, 0.835);
     padding: 10px;
     color: white;
