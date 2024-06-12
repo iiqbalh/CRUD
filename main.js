@@ -44,7 +44,6 @@ app.post('/edit/:id', function(req, res) {
         name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: req.body.married === 'true' ? req.body.married = true : req.body.married = false 
     };
 
-    console.log(obj[id])
     writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
     res.redirect('/')
 })
