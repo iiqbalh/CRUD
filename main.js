@@ -117,7 +117,6 @@ http.createServer(function (req, res) {
         const params = querystring.parse(url.parse(req.url).query);
         let id = params.id;
         data.splice(id, 1);
-        console.log(id)
         writeFileSync(dataPath, JSON.stringify(data, null, 2));
         res.writeHead(301, { location: 'http://localhost:3000/' }).end()
 
@@ -126,7 +125,6 @@ http.createServer(function (req, res) {
         let id = params2.id
 
         if (req.method == 'POST') {
-            res.writeHead(200, { 'content-type': 'text/html' });
             let body = '';
             req.on('data', function (chunk) {
                 body += chunk;

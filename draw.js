@@ -50,7 +50,7 @@ function drawUpdate(json) {
     `
 
     html += `
-        <option>Have you married?</option>
+        <option disabled>Have you married?</option>
         <option value="true" ${json.married ? " selected" : ''}>True</option>
         <option value="false" ${!json.married ? " selected" : ''}>False</option>
                 `
@@ -66,7 +66,7 @@ function drawCreate() {
     `
 
     html += `
-        <option selected>Have you married?</option>
+        <option disabled selected>Have you married?</option>
         <option value="true">True</option>
         <option value="false">False</option>
                 `
