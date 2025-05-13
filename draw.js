@@ -28,7 +28,7 @@ function drawRead(json) {
             <td>${item.married ? 'Yes' : 'Not Yet'}</td>
             <td>
             <a href="/edit?id=${index}">Update</a>
-            <a href="/delete?id=${index}" onclick="return confirm('apakah anda yakin? ')">Delete</a>
+            <a href="/Remove?id=${index}" onclick="return confirm('apakah kamu yakin akan menghapus data ${item.name}?')">Delete</a>
             </td>
         </tr>
         `
