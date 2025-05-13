@@ -26,5 +26,12 @@
     "weight": 12,
     "birthdate": "2025-05-07",
     "married": false
+  },
+  {
+    "name": "amel",
+    "height": 321,
+    "weight": 32,
+    "birthdate": "2025-05-16",
+    "married": true
   }
 ]
