@@ -1,80 +1,3 @@
-// import express from 'express'
-// import path from "path"
-// import bodyParser from "body-parser"
-// import { readFileSync, writeFileSync } from 'fs';
-
-// const app = express();
-// const datapath = path.join(path.resolve(), 'data', 'data.json')
-// const data = readFileSync(datapath, "utf-8")
-// const obj = JSON.parse(data)
-
-// app.set('view engine', 'ejs')
-// app.use(express.static('public'))
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json())
-
-// app.get('/', function(req, res) {
-//     res.render('read', { data: obj })
-// })
-
-// app.get('/add', function(req, res) {
-//     res.render('create')
-// })
-
-// app.post('/add', function(req, res) {
-//     let data = {
-//         name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: req.body.married === 'true' ? req.body.married = true : req.body.married = false 
-//     };
-
-//     obj.push(data)
-
-//     writeFileSync(datapath, JSON.stringify(obj), "utf-8");
-//     res.redirect('/')
-// })
-
-// app.get('/edit/:id', function(req, res) {
-//     const id = req.params.id
-//     const item = obj[id]
-//     res.render('update', { item })
-// })
-
-// app.post('/edit/:id', function(req, res) {
-//     const id = req.params.id;
-//     obj[id] = {
-//         name: req.body.name, height: Number(req.body.height), weight: Number(req.body.weight), birthdate: req.body.birthdate, married: req.body.married === 'true' ? req.body.married = true : req.body.married = false 
-//     };
-
-//     writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
-//     res.redirect('/')
-// })
-
-// app.get('/delete/:id', function(req, res) {
-//     const id = req.params.id;
-//     obj.splice(id, 1);
-//     writeFileSync(datapath, JSON.stringify(obj), 'utf-8');
-//     res.redirect('/')
-// })
-
-// app.listen(3000, function() {
-//     console.log(`Server berjalan di port 3000`)
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const { readFileSync, writeFileSync } = require('node:fs');
 const path = require('node:path');
 const http = require('http');
@@ -107,7 +30,12 @@ http.createServer(function (req, res) {
                     married: params.get('married') == 'true' ? true : false
                 });
                 writeFileSync(dataPath, JSON.stringify(data, null, 2));
-                res.writeHead(301, { location: 'http://localhost:3000/' }).end()
+                res.writeHead(301, {
+                    location: 'http://localhost:3000/', 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'Surrogate-Control': 'no-store',
+                }).end()
             });
         } else {
             res.end(create.replace('#title#', 'Adding Data').replace('#nama#', '').replace('#married#', drawCreate()))
@@ -119,7 +47,12 @@ http.createServer(function (req, res) {
         data.splice(id, 1);
         console.log(id)
         writeFileSync(dataPath, JSON.stringify(data, null, 2));
-        res.writeHead(301, { location: 'http://localhost:3000/' }).end()
+        res.writeHead(302, {
+            location: 'http://localhost:3000/', 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+            'Surrogate-Control': 'no-store',
+        }).end()
 
     } else if (req.url.startsWith('/edit')) {
         const params2 = querystring.parse(url.parse(req.url).query);
@@ -140,11 +73,16 @@ http.createServer(function (req, res) {
                     married: params.get('married') == 'true' ? true : false
                 }
                 writeFileSync(dataPath, JSON.stringify(data, null, 2));
-                res.writeHead(301, { location: 'http://localhost:3000/' }).end()
+                res.writeHead(301, {
+                    location: 'http://localhost:3000/', 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'Surrogate-Control': 'no-store',
+                }).end()
             });
 
         } else {
-            res.end(create.replace('#nama#', data[id].name).replace('#height#', data[id].height).replace('#weight#', data[id].weight).replace('#date#',data[id].birthdate).replace('#married#', drawUpdate(data[id])).replace('#title#', 'Updating Data'));
+            res.end(create.replace('#nama#', data[id].name).replace('#height#', data[id].height).replace('#weight#', data[id].weight).replace('#date#', data[id].birthdate).replace('#married#', drawUpdate(data[id])).replace('#title#', 'Updating Data'));
         }
     } else {
         res.end(readHtml('ERROR', '<h2>404</h2>'))

@@ -51,8 +51,8 @@ function drawUpdate(json) {
 
     html += `
         <option disabled>Have you married?</option>
-        <option value="true" ${json.married ? " selected" : ''}>True</option>
-        <option value="false" ${!json.married ? " selected" : ''}>False</option>
+        <option value="true" ${json.married ? " selected" : ''}>Yes</option>
+        <option value="false" ${!json.married ? " selected" : ''}>Not Yet</option>
                 `
     html += `
         </select>`
